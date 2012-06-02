@@ -116,6 +116,17 @@ describe It::Helper, "#it" do
     @view.it('test1', :locale => "de", :link => It.link("http://www.rubyonrails.org")).should == 'Ich enthalte einen <a href="http://www.rubyonrails.org">Link zu Rails</a> in der Mitte.'
   end
 
+  it 'should pass default I18n.locale option to translate if specified locale is nil' do
+    @view.should_receive(:t).with('test1', :locale => :en)
+    @view.it('test1', :link => It.link("http://www.rubyonrails.org"))
+  end
+
+  it 'should pass specified locale option to translate if specified locale is nil' do
+    @view.should_receive(:t).with('test1', :locale => "de")
+    @view.it('test1', :locale => "de", :link => It.link("http://www.rubyonrails.org"))
+  end
+
+  
   context "With a pluralized translation" do
     before do
       I18n.backend.store_translations(:en, :test10 => {:zero => "You have zero messages.", :one => "You have %{link:one message}.", :other => "You have %{link:%{count} messages}."})

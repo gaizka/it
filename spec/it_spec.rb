@@ -8,6 +8,14 @@ describe It, '.it' do
     I18n.backend.store_translations(:en, :test1 => "I'm containing a %{link:link to Rails} in the middle.")
     It.it("test1", :link => It.link("http://www.rubyonrails.org")).should == 'I\'m containing a <a href="http://www.rubyonrails.org">link to Rails</a> in the middle.'
   end
+  it "should pass I18n.locale option to I18n.locale if not specified" do
+    I18n.should_receive(:t).with('test1', {:locale => :en})
+    It.it("test1")
+  end
+  it "should not pass :locale option to I18n.locale if specified" do
+    I18n.should_receive(:t).with('test1', {:locale => :de})
+    It.it("test1", :locale => :de)
+  end
 end
 
 describe It, '.link' do
